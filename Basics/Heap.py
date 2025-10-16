@@ -33,6 +33,41 @@ class Heap:
         # Print heap state after insertion (for debugging)
         print(f"Heap after inserting {value}: {self.heap}")
 
+    def pop(self):
+        res = self.heap[1]
+        # Now we need to move the last element to the root and bubble it down
+        self.heap[1] = self.heap[-1]
+        self.heap.pop()
+
+        def bubble_down(index):
+            left_index = index * 2
+            right_index = index * 2 + 1
+            smallest_index = index
+
+            # Check if left child exists and is smaller than current
+            if (
+                left_index < len(self.heap)
+                and self.heap[left_index] < self.heap[smallest_index]
+            ):
+                smallest_index = left_index
+
+            # Check if right child exists and is smaller than current smallest
+            if (
+                right_index < len(self.heap)
+                and self.heap[right_index] < self.heap[smallest_index]
+            ):
+                smallest_index = right_index
+
+            # If the smallest is not the current index, swap and continue bubbling down
+            if smallest_index != index:
+                self.heap[index], self.heap[smallest_index] = (
+                    self.heap[smallest_index],
+                    self.heap[index],
+                )
+                bubble_down(smallest_index)
+
+        return res
+
 
 heap = Heap([9, 10, 15, 20, 22, 23])
 heap.insert(6)
